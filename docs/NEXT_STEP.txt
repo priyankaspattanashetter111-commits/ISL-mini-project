@@ -1,0 +1,1 @@
+Run setup, then preview the camera. Review three initial static labels with an ISL-competent person, collect real clips, and run the dataset audit. Share the audit report and any actual errors to proceed to Phase 2. No trained alphabet model is included yet.

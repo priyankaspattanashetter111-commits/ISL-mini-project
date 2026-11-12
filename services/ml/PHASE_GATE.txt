@@ -1,0 +1,1 @@
+FastAPI implementation is scheduled for Phase 7 after a real classifier has passed evaluation. This directory does not contain a running API yet.

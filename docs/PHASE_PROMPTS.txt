@@ -1,0 +1,194 @@
+INDIAN SIGN LANGUAGE SPELLING ASSISTANT
+MASTER INSTRUCTION
+Act as a practical ML engineer and full-stack developer helping a third-year CSE student build an Indian Sign Language spelling assistant. Preserve Python, MediaPipe, OpenCV, scikit-learn or TensorFlow/Keras, FastAPI, Node.js, React and MongoDB. Inspect the attached source and actual preceding-phase evidence before editing. Do not invent data, class mappings, model weights, accuracy, screenshots or successful responses. Keep synthetic software fixtures separate from recognition evaluation. Give complete files, exact filenames, commands with their working directory, expected output and failure checks. Run the available tests and report actual results. Mark camera, human, external-service or dataset checks pending when they cannot be executed. Explain important functions and service boundaries in student-friendly language. Implement only the requested phase, keep existing tests passing and stop before the next major phase until the gate has actual evidence.
+
+PHASE 1 ENVIRONMENT SETUP AND COLLECTION
+INPUTS
+Use the delivered Phase 1 source, Python version, camera device and actual error messages. A reviewed ISL mapping and signer agreement are required before approved recording.
+FILENAMES
+requirements.txt; setup.cmd; config/alphabet.json; config/capture.json; scripts/download_detector.py; scripts/check_environment.py; scripts/review_label.py; vision/landmarks.py; vision/storage.py; vision/collect.py; ml/audit_dataset.py; tests/test_phase1.py.
+PROMPT
+Implement or debug the environment and dataset collector. Use MediaPipe Tasks HandLandmarker with two hands and OpenCV for a local camera preview. Work from the existing 128-feature definition and record its version. Preserve inter-hand x/y geometry and presence masks; document z and handedness limitations. Keep inference pixels unmirrored and mirror only the preview.
+
+Save one deliberate performance as a timestamped NPZ landmark clip under signer/session/label. Never save raw webcam footage by default. Require a reviewed mapping and explicit signer consent. Record actual lighting, angle and distance, a clip ID and checksum. Reject insufficient frames and poor hand visibility. Include SPACE countdown, recording progress, saved/rejected feedback and safe exit. Avoid fabricating A-Z gestures or teaching ASL as Indian Sign Language.
+
+Audit exact labels, duplicates, groups and coverage, keeping empty data not ready. Verify imports, real detector loading and blank-frame inference; add software checks for geometry, storage, missing hands and invalid metadata. Explain each command and where the resulting files appear. Include a camera checklist the student can perform without recording first.
+GATE
+Environment checks and software tests pass; the student has confirmed camera operation, reviewed actual signs and supplied the dataset audit. Training and final application remain pending.
+
+PHASE 2 PREPROCESSING AND LANDMARK DATASETS
+INPUTS
+Attach a real dataset audit, config/alphabet.json and representative NPZ metadata. The camera and mapping review gate must have passed.
+FILENAMES
+ml/preprocess.py; ml/split_groups.py; tests/test_preprocess.py; data/processed/dataset.npz; data/processed/splits.json; reports/preprocessing.json.
+PROMPT
+Inspect the actual clip inventory before choosing supported classes. Read NPZ with allow_pickle=False, verify checksums and feature/mapping versions, and report rejected samples with reasons. Reuse vision.landmarks.normalize so training and future inference share identical features. Do not treat missing hands as observed neutral gestures.
+
+For static gestures, derive one or a controlled set of valid representative features per clip without leaking near-identical frames across splits. For temporal experiments, preserve time order and resample real trajectories to an agreed fixed length using timestamps and presence masks. Never make a temporal sample by repeating a still frame. Keep static and dynamic variants explicit.
+
+Create deterministic train/validation/test manifests grouped by signer when coverage permits. If signer-independent evaluation is impossible, explain it and use genuinely separate sessions with an explicit session-only label. Fit no scaler on validation or test data. Reject overlap by signer/clip and exact content duplicates; show class and group counts in each split. Do not silently omit unsupported classes to claim full A-Z.
+
+Write the reusable arrays, label encoding, manifest, seed, source hashes and preprocessing report. Explain the shapes and provide exact inspection commands. Test bad shapes, incompatible versions, missing classes, empty groups, duplicate clips and split leakage.
+GATE
+The saved manifests have no clip/group leakage; actual class coverage and rejection counts are reviewed. The data representation and evaluation scope are approved before training.
+
+PHASE 3 TRAIN THE LANDMARK CLASSIFIER
+INPUTS
+Attach the verified processed arrays, manifests, mapping and preprocessing report. No synthetic geometry may be used as recognition training data.
+FILENAMES
+ml/train_static.py; config/train_static.json; ml/model_io.py; tests/test_model_io.py; models/static_classifier.joblib; models/labels.json; reports/training_run.json; reports/training_curves.png.
+PROMPT
+Implement a compact scikit-learn MLP baseline for the actual static classes, using the 128 landmark features. Propose hidden layers 128 and 64 with ReLU, Adam, cross-entropy, batch size 32 or a smaller justified size, seed 42 and a configurable maximum of 150 epochs. Adjust only when actual sample counts justify it. Fit a scaler on training features only and preserve the fitted preprocessing with the model.
+
+Use an explicit epoch loop or other honest method to record training and validation loss and accuracy. Select the best checkpoint or stopping point by validation performance, not the held-out test. Save the run configuration, dependency versions, label order, data hashes and feature version. Produce real curves from recorded epochs, not invented example graphs. Explain overfitting and insufficient coverage.
+
+Provide safe model loading for trusted local artifacts and reject feature/label mismatches. Do not load arbitrary untrusted joblib files. Add a saved/reloaded prediction consistency test. If data or compute is insufficient, report the blocker and do not create fake classifier weights.
+
+Separately assess whether a motion-sensitive class requires a genuine sequence model. Design an LSTM experiment only if the dataset includes enough real temporal examples and holdout groups. Keep its results distinct from the static baseline. Do not add a CNN unless a separate image comparison is justified.
+GATE
+A real training run completed and its weights, label map, exact configuration and recorded curves exist. No test-set tuning or unsupported trained-model claim is allowed.
+
+PHASE 4 EVALUATE RECOGNITION HONESTLY
+INPUTS
+Attach the trained artifact, run configuration, label map and frozen test manifest. Test data must not have guided training choices.
+FILENAMES
+ml/evaluate.py; tests/test_metrics.py; reports/evaluation.json; reports/classification_report.csv; reports/confusion_matrix.png; reports/condition_results.csv; docs/MODEL_CARD.md.
+PROMPT
+Run the saved classifier on the held-out test groups exactly as declared. Report accuracy, per-class precision, recall, F1 and support, macro and weighted averages, and a confusion matrix with its true/predicted axes labelled. Include the model and data hashes. Plot actual training and validation curves from the training logs, keeping test metrics separate.
+
+Explain each metric in beginner terms and identify confused classes from actual errors. Distinguish no-hand/invalid-detection rejections from classifier errors and report the evaluated denominator. Record absent classes rather than filling in invented values. If one signer supplied all data, prominently restrict conclusions to held-out sessions.
+
+Use validation data to investigate confidence thresholds and any calibration method. State that model scores are not proven probabilities of correctness. Record accuracy/coverage tradeoffs as thresholds change. Do not select a threshold on the final test and then report that test as untouched.
+
+Evaluate lighting, camera angle, hand position and distance only when real labelled examples for those conditions exist. Otherwise create an empty experiment protocol marked pending, not a completed result table. Use synthetic fixtures only to check metric calculations. Write a model card covering population, variants, classes, limitations, licences and failure cases. Stop if coverage or recognition quality does not justify live use.
+GATE
+Actual results and denominators exist; limitations and common confusions are understood. The team decides whether data/model quality is sufficient for the webcam stage.
+
+PHASE 5 REAL TIME WEBCAM INFERENCE
+INPUTS
+Attach the evaluated model, model card, feature implementation and detector asset. Supported classes must be explicit.
+FILENAMES
+vision/recognize.py; vision/predictor.py; config/inference.json; tests/test_predictor.py; reports/webcam_checks.csv.
+PROMPT
+Build a local OpenCV recognition demonstration using the trusted saved model. Reuse the exact versioned normalization and label ordering from training. Detect both hands, display tracking status and overlay the predicted letter and its model score. No hands must produce a no-hand result rather than an alphabet guess.
+
+Show low-confidence and unsupported/invalid detection states distinctly. Provide a configurable threshold derived from validation findings. Do not imply that every confidently classified pose is a valid ISL sign; explicitly test out-of-distribution gestures. Measure actual end-to-end latency and processed frame rate instead of inventing real-time benchmarks.
+
+Use monotonic timestamps for video-mode MediaPipe. Keep the preview mirror separate from inference pixels. Handle camera permission errors, disconnects, zero-size frames, malformed artifacts and missing model files with helpful messages. Release the camera on every exit path. Avoid storing raw frames.
+
+At this stage display frame-level predictions but do not automatically append text until the segmentation gate is implemented. Add tests for model/feature mismatch, missing hands, low scores, label order and inference exceptions. Ask the student to perform documented local trials under normal/dim lighting and several camera positions, recording actual outcomes and failures.
+GATE
+Saved-model webcam inference is locally demonstrated with recorded real observations. Frame predictions alone are not accepted as continuous fingerspelling.
+
+PHASE 6 LETTER BOUNDARIES AND TEXT EDITING
+INPUTS
+Attach actual webcam observations and prediction event examples. Threshold and timing assumptions must be stated.
+FILENAMES
+vision/letter_gate.py; services/shared/editor_contract.json; tests/test_letter_gate.py; tests/test_editor.py; docs/SEGMENTATION.md.
+PROMPT
+Implement an explicit time-based state machine for assisted spelling. Suggested states are Idle, Candidate, Stable, Emitted and AwaitRelease. Require a configurable stable interval and sufficient confidence before emitting exactly one character. Latch after emission. A changed predicted label alone must not reset the latch, because transition poses can resemble other letters.
+
+Rearm after an intentional sustained neutral/release interval or an explicit Next letter action. Explain that disappearance caused by occlusion is ambiguous, so offer manual confirmation and test short missing detections. Repeated letters such as LL require a deliberate rearm. Low-confidence predictions become pending candidates and must never enter text automatically. Provide confirm and reject actions and source prediction IDs.
+
+Define append, replace-by-index, backspace, space, clear and undo operations with an ordered event log. Keep the visible sequence, current unfinished word and sentence consistent. Deduplicate repeated network events by ID. A delayed prediction must not overwrite a user's manual correction.
+
+Test long holds, noisy transitions, threshold crossings, irregular frame intervals, repeated letters, missing detections, stale timestamps, explicit rearm, confirmation and undo after replacement. Demonstrate known strings with deliberate boundaries. Label the result assisted continuous spelling; do not claim unrestricted natural fingerspelling or treat an isolated-gesture LSTM as a full segmentation solution.
+GATE
+Automated gate/editor tests pass and a local deliberate spelling demo produces the intended sequence without duplicate insertions.
+
+PHASE 7 FASTAPI AND NODE SERVICES
+INPUTS
+Attach the evaluated predictor, letter gate, editing contract and local demonstrations. Confirm service ownership before implementation.
+FILENAMES
+services/ml/app.py; services/ml/schemas.py; services/ml/requirements.txt; services/api/package.json; services/api/src/server.js; services/api/src/routes.js; tests/test_ml_api.py; services/api/test/api.test.js; docs/API.md.
+PROMPT
+Implement real FastAPI inference and a Node.js application API. FastAPI loads the trusted model once, decodes bounded JPEG inputs through OpenCV and returns frame ID, label, score, hand status and model version. It must report unavailable models explicitly rather than returning dummy letters. Node forwards recognition requests and owns app-level editor/session operations, suggestion endpoints and later persistence hooks.
+
+Keep stream IDs and timestamps scoped to the user. Avoid sharing one MediaPipe video tracker across unrelated streams. Start with stateless image detection or managed per-stream instances with cleanup. Bound dimensions, bytes and request rate; permit only one in-flight inference request per browser client. Run blocking inference outside FastAPI's event loop. Reject stale responses.
+
+Define and document request/response JSON and errors for recognition, text edits, suggestions, vocabulary, history, practice and speech text validation. Mark persistence-dependent routes unavailable until MongoDB exists; do not silently store volatile arrays while claiming database integration. Explain localhost CORS origins and service ports.
+
+Provide exact dependency installation and startup commands from each service directory. Run actual health, validation, malformed-frame, unavailable-model, timeout and stream-isolation tests. Include example responses only when captured from executed requests, or explicitly label them schema examples. Preserve the prescribed Python and Node responsibilities.
+GATE
+Both real services run; their contract, forwarding, errors and stream isolation are tested. Database-dependent behavior remains blocked until Phase 8.
+
+PHASE 8 MONGODB DATA INTEGRATION
+INPUTS
+Attach the real API source and tests. Obtain a local MongoDB connection string without exposing credentials.
+FILENAMES
+services/api/src/db.js; services/api/src/repositories.js; services/api/scripts/init-db.js; services/api/.env.example; services/api/test/db.integration.test.js; docs/DATABASE.md.
+PROMPT
+Connect Node.js to an actual MongoDB instance using the official driver. Define users, gestureReferences, sequences, utterances, vocabulary, history and practiceRecords. Explain each document, required fields, timestamps and indexes. Create compound uniqueness for normalized per-user vocabulary and indexes for user/date history queries. Do not save webcam footage.
+
+Provide minimal user/session identification appropriate to a localhost college prototype, with ownership enforced on every user-scoped operation. Do not present a supplied userId as secure authentication. If durable login is implemented, explain password hashing and token/session handling; otherwise disclose the local-demo access limitation and avoid external exposure.
+
+Implement validated CRUD, correction-event persistence, vocabulary update/delete, utterance/history retrieval and practice results. Preserve ordered edits and use idempotent request IDs where retries can duplicate records. Keep secrets in ignored environment files and provide only placeholder values in .env.example.
+
+Run real MongoDB integration tests, including persistence after service restart, per-user isolation, invalid IDs, duplicate vocabulary, nonexistent records and database outage behavior. Sample documents must be labelled examples, not live user records. Provide installation and database-test commands with their working directories. If MongoDB cannot be started, report integration pending rather than claiming a successful connection.
+GATE
+Real MongoDB CRUD, indexes, ownership and persistence checks pass. Capture test evidence without publishing credentials or participant data.
+
+PHASE 9 REACT INTERFACE AND CAMERA WORKFLOW
+INPUTS
+Attach the tested APIs, database status and API contract. Supply only properly licensed reference assets.
+FILENAMES
+web/package.json; web/src/App.jsx; web/src/api.js; web/src/components/CameraPanel.jsx; web/src/components/TextComposer.jsx; web/src/pages/*.jsx; web/src/styles.css; web/tests/*.test.jsx.
+PROMPT
+Build the real responsive React application with a polished, calm interface. Use warm off-white surfaces, deep navy text, teal primary actions and clearly labelled amber review states. Create a desktop navigation rail and camera/composer split layout; stack panels on mobile. Use semantic controls, keyboard focus, readable contrast and visible errors. Do not add decorative fake statistics or claim unmeasured accuracy.
+
+Implement Dashboard, Live spelling, Compose, Vocabulary, History, Practice and Output views. The live view shows camera start/stop, prediction, model score, tracking state, stabilization progress, armed/pending state and the editable sentence. Include confirm, reject, Next letter, backspace, replace, undo and space controls. Make the current word visible without hiding the full sentence.
+
+The browser owns getUserMedia in this mode; stop all tracks on exit. Send downscaled frames through Node with one request in flight and unique frame IDs. Handle camera denial, unavailable model, slow inference and service outages. Discard stale responses and never overwrite a manual edit with an old prediction.
+
+Connect to real endpoints for vocabulary/history/practice rather than hardcoded success messages. Use vetted references or clear reference-unavailable states. Provide exact install, development and production-build commands. Test keyboard editing, camera cleanup, error handling and responsive layouts. Visually inspect the rendered interface and report actual checks.
+GATE
+The React build succeeds and real browser interactions work with both services and MongoDB. Camera permission and visible-layout checks are recorded.
+
+PHASE 10 SPELLING ASSISTANCE AND SPEECH
+INPUTS
+Attach the functioning React editor, persistence APIs and real end-to-end session evidence.
+FILENAMES
+services/api/src/suggestions.js; services/api/data/base-vocabulary.txt; web/src/components/WordSuggestions.jsx; web/src/pages/Vocabulary.jsx; web/src/pages/History.jsx; web/src/pages/Practice.jsx; web/src/pages/Output.jsx; relevant tests.
+PROMPT
+Implement prefix-based word suggestions from a legitimate bundled vocabulary, per-user custom words and history frequency. Call this dictionary/prefix completion, not an advanced language model. State the vocabulary licence. Normalize case for matching while preserving display forms. Selecting a suggestion replaces only the unfinished word and supports undo.
+
+Finish personalized vocabulary add/edit/delete with persistence and uniqueness. Store final words/sentences through the tested API and show retrievable dated history. Let users reopen a history entry without silently overwriting current text. Preserve correction events and source prediction confidence where useful.
+
+Build practice mode from the reviewed mapping: choose a target supported class, show a vetted reference or clear absence, capture a prediction, display match/mismatch/uncertain feedback and store the actual attempt. A low-confidence result must not count as a definite correct attempt. Do not imply that prediction agreement proves linguistically correct signing.
+
+Add browser speechSynthesis playback on an explicit Play action, with stop and unsupported-browser handling. The text must remain editable before speech. A speech endpoint may validate text, but cannot claim to return synthesized audio unless an actual engine is implemented. Test prefix replacement, empty text, Unicode, vocabulary ownership, undo, history retrieval and practice records. Record a local audible-speech check separately from automated button tests.
+GATE
+All assistance features use real APIs and persisted data; speech is audibly checked locally and pending/uncertain states behave honestly.
+
+PHASE 11 FULL SYSTEM INTEGRATION
+INPUTS
+Attach all tested components, model artifacts, model card, API contract, environment templates and database evidence.
+FILENAMES
+scripts/start-local.ps1; scripts/health-check.ps1; tests/e2e/; docs/RUNBOOK.md; docs/INTEGRATION_RESULTS.md; deployment configuration only if actually used.
+PROMPT
+Integrate the complete pipeline without replacing the specified stack. Provide startup order and exact commands for MongoDB, FastAPI, Node and React, including ports and environment variables. Make scripts handle paths containing spaces and missing dependencies. Do not hide service failures behind fake data or a demo-only classifier.
+
+Run a real workflow: camera permission, model inference, stable letter insertion, deliberate repeated letter, space, word completion, correction and undo, sentence edit, history save/reload, vocabulary update, practice attempt and speech playback. Verify MongoDB data survives restart. Include two concurrent sessions to check that tracking, text and history do not leak across users.
+
+Test model-unavailable startup, camera denial, oversized frame, delayed response, Node-to-FastAPI timeout and MongoDB outage/recovery. Show clear frontend states and recover without duplicating text or database writes. Measure actual request latency and throughput on the test machine; report the machine and sample count, not unsupported production claims.
+
+Add automated integration tests and a manual browser/camera checklist. Mark tests not executed as pending. Preserve privacy: avoid raw frames in logs, secrets in reports and accidental participant uploads. Package only required source/configuration with trusted model provenance. Explain each component's responsibility and what a failure in that component looks like.
+GATE
+A complete real workflow and failure-recovery checklist passes on the target demonstration machine, with dated evidence and remaining limitations.
+
+PHASE 12 FINAL TESTING AND ACADEMIC DEMONSTRATION
+INPUTS
+Attach the integrated source, actual model artifacts, frozen evaluation reports, local runbook and integration evidence.
+FILENAMES
+docs/FINAL_REPORT.md; docs/DEMO_SCRIPT.md; docs/TEST_MATRIX.csv; docs/MODEL_CARD.md; docs/DATA_CARD.md; final source ZIP; trained model and label map with checksums.
+PROMPT
+Prepare the reproducible final mini-project delivery from executed work. Include source, installation instructions, dataset collection/preprocessing details, genuine trained weights, label mapping, evaluation metrics, actual curves, architecture, APIs, database schemas and a feature/test matrix. Separate software-test results from recognition and condition-based evaluation.
+
+Run the demonstration on the intended laptop. Cover supported alphabet classes, confidence feedback, low-confidence confirmation, a long-held sign, repeated letters, corrections, suggestions, personal vocabulary, history, sentence editing, speech and practice. Show one failure case and its recovery. Clearly describe the required hold/release or explicit boundary gesture rather than claiming unrestricted natural fingerspelling.
+
+Evaluate varied lighting, angles, hand position and distance with labelled trials and counts. Publish actual accuracy/precision/recall/F1 and confusion matrix only for the declared held-out data. If dynamic classes or some letters remain unsupported, name them explicitly. Do not claim 26-class, signer-independent or production readiness unless demonstrated.
+
+Remove secrets, caches and unnecessary participant data from the archive. Document dataset/model licences, consent, limitations and known risks. Verify extraction and clean setup on a fresh directory. Prepare a five-minute demo script and student explanations of normalization, group splitting, MLP versus LSTM, segmentation, service roles and MongoDB ownership. List uncompleted requirements honestly; do not fill them with invented successful outputs.
+GATE
+The extracted deliverable reproduces the actual demo and reports. Every claimed feature has code, evidence and a stated limitation where applicable.
+

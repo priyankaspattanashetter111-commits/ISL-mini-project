@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "mapping_version": "local-isl-v1",
+  "description": "A-Z are target labels, not verified ISL gesture mappings. Review each local variant before collecting approved clips.",
+  "labels": {
+    "A": {
+      "label": "A",
+      "language": "Indian Sign Language",
+      "kind": "static",
+      "expected_hands": 2,
+      "reference_url": "Local instructor review",
+      "reviewer_id": "R01",
+      "reviewed": true,
+      "notes": ""
+    },
+    "B": {
+      "label": "B",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "C": {
+      "label": "C",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "D": {
+      "label": "D",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "E": {
+      "label": "E",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "F": {
+      "label": "F",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "G": {
+      "label": "G",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "H": {
+      "label": "H",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "I": {
+      "label": "I",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "J": {
+      "label": "J",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "K": {
+      "label": "K",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "L": {
+      "label": "L",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "M": {
+      "label": "M",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "N": {
+      "label": "N",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "O": {
+      "label": "O",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "P": {
+      "label": "P",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "Q": {
+      "label": "Q",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "R": {
+      "label": "R",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "S": {
+      "label": "S",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "T": {
+      "label": "T",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "U": {
+      "label": "U",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "V": {
+      "label": "V",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "W": {
+      "label": "W",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "X": {
+      "label": "X",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "Y": {
+      "label": "Y",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    },
+    "Z": {
+      "label": "Z",
+      "language": "Indian Sign Language",
+      "kind": "unreviewed",
+      "expected_hands": null,
+      "reference_url": "",
+      "reviewer_id": "",
+      "reviewed": false,
+      "notes": "Target label only. No gesture mapping has been verified."
+    }
+  }
+}
